@@ -1,5 +1,5 @@
 import { createBucketClient } from '@cosmicjs/sdk'
-import { Post, Author, Category } from '@/types'
+import { Post, Author, Category, User } from '@/types'
 
 const cosmic = createBucketClient({
   bucketSlug: process.env.COSMIC_BUCKET_SLUG || '',
@@ -164,6 +164,62 @@ export async function searchPosts(query: string): Promise<Post[]> {
   } catch (error) {
     if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return []
+    }
+    throw error
+  }
+}
+
+// User authentication functions
+export async function getUserByEmail(email: string): Promise<User | null> {
+  try {
+    const response = await cosmic.objects.findOne({
+      type: 'users',
+      'metadata.email': email,
+    }).depth(1)
+    
+    return response.object as User
+  } catch (error) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
+      return null
+    }
+    throw error
+  }
+}
+
+export async function createUser(userData: {
+  name: string;
+  email: string;
+  password_hash: string;
+  role?: 'user' | 'admin';
+  bio?: string;
+}): Promise<User> {
+  const response = await cosmic.objects.insertOne({
+    title: userData.name,
+    type: 'users',
+    slug: userData.email.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+    metadata: {
+      name: userData.name,
+      email: userData.email,
+      password_hash: userData.password_hash,
+      role: userData.role || 'user',
+      bio: userData.bio || ''
+    }
+  })
+  
+  return response.object as User
+}
+
+export async function getUserById(id: string): Promise<User | null> {
+  try {
+    const response = await cosmic.objects.findOne({
+      type: 'users',
+      id: id,
+    }).depth(1)
+    
+    return response.object as User
+  } catch (error) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
+      return null
     }
     throw error
   }

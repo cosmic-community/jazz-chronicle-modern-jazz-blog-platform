@@ -12,6 +12,22 @@ interface CosmicObject {
   status: string;
 }
 
+// User interface
+interface User extends CosmicObject {
+  type: 'users';
+  metadata: {
+    name: string;
+    email: string;
+    password_hash: string;
+    role: 'user' | 'admin';
+    avatar?: {
+      url: string;
+      imgix_url: string;
+    };
+    bio?: string;
+  };
+}
+
 // Post interface
 interface Post extends CosmicObject {
   type: 'posts';
@@ -57,6 +73,36 @@ interface Category extends CosmicObject {
   };
 }
 
+// Authentication types
+interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'user' | 'admin';
+  avatar?: string;
+  bio?: string;
+}
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface SignupCredentials {
+  name: string;
+  email: string;
+  password: string;
+  bio?: string;
+}
+
+interface AuthContextType {
+  user: AuthUser | null;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  signup: (credentials: SignupCredentials) => Promise<void>;
+  logout: () => void;
+  loading: boolean;
+}
+
 // API response types
 interface CosmicResponse<T> {
   objects: T[];
@@ -92,9 +138,14 @@ type PostStatus = 'published' | 'draft' | 'archived';
 
 export type {
   CosmicObject,
+  User,
   Post,
   Author,
   Category,
+  AuthUser,
+  LoginCredentials,
+  SignupCredentials,
+  AuthContextType,
   CosmicResponse,
   PostCardProps,
   CategoryBadgeProps,
