@@ -16,8 +16,8 @@ export async function getPosts(): Promise<Post[]> {
       .depth(1)
     
     return response.objects as Post[]
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return []
     }
     throw error
@@ -32,8 +32,8 @@ export async function getPost(slug: string): Promise<Post | null> {
       .depth(1)
     
     return response.object as Post
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return null
     }
     throw error
@@ -48,8 +48,8 @@ export async function getPostsByCategory(categorySlug: string): Promise<Post[]> 
       .depth(1)
     
     return response.objects as Post[]
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return []
     }
     throw error
@@ -65,8 +65,8 @@ export async function getCategories(): Promise<Category[]> {
       .depth(1)
     
     return response.objects as Category[]
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return []
     }
     throw error
@@ -81,8 +81,8 @@ export async function getCategory(slug: string): Promise<Category | null> {
       .depth(1)
     
     return response.object as Category
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return null
     }
     throw error
@@ -98,8 +98,8 @@ export async function getAuthors(): Promise<Author[]> {
       .depth(1)
     
     return response.objects as Author[]
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return []
     }
     throw error
@@ -114,8 +114,8 @@ export async function getAuthor(slug: string): Promise<Author | null> {
       .depth(1)
     
     return response.object as Author
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return null
     }
     throw error
@@ -131,8 +131,8 @@ export async function getUserByEmail(email: string): Promise<User | null> {
       .depth(1)
     
     return response.object as User
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return null
     }
     throw error
@@ -147,8 +147,8 @@ export async function getUserById(id: string): Promise<User | null> {
       .depth(1)
     
     return response.object as User
-  } catch (error) {
-    if (error.status === 404) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return null
     }
     throw error
