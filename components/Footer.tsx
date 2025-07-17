@@ -1,3 +1,5 @@
+'use client'
+
 export default function Footer() {
   const COSMIC_BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG || 'jazz-chronicle'
   
