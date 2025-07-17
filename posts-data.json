@@ -1,0 +1,93 @@
+{
+  "posts": [
+    {
+      "id": "68789fda2920a13bc482d27f",
+      "slug": "the-birth-of-bebop-how-charlie-parker-and-dizzy-gillespie-changed-everything",
+      "title": "The Birth of Bebop: How Charlie Parker and Dizzy Gillespie Changed Everything",
+      "excerpt": "Exploring the revolutionary movement that transformed jazz from dance music to art form in the 1940s.",
+      "published_date": "2024-11-05",
+      "featured_image": "https://imgix.cosmicjs.com/e7269270-62db-11f0-a051-23c10f41277a-photo-1508700115892-45ecd05ae2ad-1752735705765.jpg",
+      "author": {
+        "name": "Sarah Mitchell",
+        "slug": "sarah-mitchell",
+        "specialties": "Bebop, Hard Bop, Jazz History"
+      },
+      "category": {
+        "name": "Jazz History",
+        "slug": "jazz-history",
+        "color": "#45B7D1"
+      },
+      "tags": "bebop, charlie parker, dizzy gillespie, thelonious monk, jazz history"
+    },
+    {
+      "id": "68789fda2920a13bc482d27e",
+      "slug": "kind-of-blue-at-65-why-miles-daviss-masterpiece-still-resonates",
+      "title": "Kind of Blue at 65: Why Miles Davis's Masterpiece Still Resonates",
+      "excerpt": "Exploring the enduring legacy of Miles Davis's 1959 masterpiece and its continued influence on jazz musicians today.",
+      "published_date": "2024-11-15",
+      "featured_image": "https://imgix.cosmicjs.com/e71ef150-62db-11f0-a051-23c10f41277a-photo-1511192336575-5a79af67a629-1752735705726.jpg",
+      "author": {
+        "name": "Sarah Mitchell",
+        "slug": "sarah-mitchell",
+        "specialties": "Bebop, Hard Bop, Jazz History"
+      },
+      "category": {
+        "name": "Album Reviews",
+        "slug": "album-reviews",
+        "color": "#FF6B6B"
+      },
+      "tags": "miles davis, kind of blue, modal jazz, john coltrane, bill evans"
+    },
+    {
+      "id": "68789fda2920a13bc482d27c",
+      "slug": "rising-star-kamasi-washington-and-the-new-wave-of-spiritual-jazz",
+      "title": "Rising Star: Kamasi Washington and the New Wave of Spiritual Jazz",
+      "excerpt": "How Kamasi Washington is leading a revival of spiritual jazz and bringing the genre to new audiences worldwide.",
+      "published_date": "2024-11-10",
+      "featured_image": "https://imgix.cosmicjs.com/e6f26310-62db-11f0-a051-23c10f41277a-photo-1493225457124-a3eb161ffa5f-1752735705458.jpg",
+      "author": {
+        "name": "Marcus Thompson",
+        "slug": "marcus-thompson",
+        "specialties": "Contemporary Jazz, Fusion, Rhythm Section"
+      },
+      "category": {
+        "name": "Artist Spotlights",
+        "slug": "artist-spotlights",
+        "color": "#4ECDC4"
+      },
+      "tags": "kamasi washington, spiritual jazz, contemporary jazz, saxophone, the epic"
+    }
+  ],
+  "metadata": {
+    "total_posts": 3,
+    "categories": [
+      {
+        "name": "Jazz History",
+        "slug": "jazz-history",
+        "color": "#45B7D1"
+      },
+      {
+        "name": "Album Reviews",
+        "slug": "album-reviews",
+        "color": "#FF6B6B"
+      },
+      {
+        "name": "Artist Spotlights",
+        "slug": "artist-spotlights",
+        "color": "#4ECDC4"
+      }
+    ],
+    "authors": [
+      {
+        "name": "Sarah Mitchell",
+        "slug": "sarah-mitchell",
+        "specialties": "Bebop, Hard Bop, Jazz History"
+      },
+      {
+        "name": "Marcus Thompson",
+        "slug": "marcus-thompson",
+        "specialties": "Contemporary Jazz, Fusion, Rhythm Section"
+      }
+    ]
+  }
+}
