@@ -1,9 +1,26 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { verifyToken } from '@/lib/auth'
 
-export function middleware(request: NextRequest) {
-  // Add any middleware logic here if needed
-  // For example, to protect certain routes
+export async function middleware(request: NextRequest) {
+  // Get the auth token from cookies
+  const token = request.cookies.get('auth-token')?.value
+
+  // If there's a token, verify it and add user info to headers
+  if (token) {
+    try {
+      const decoded = await verifyToken(token)
+      if (decoded) {
+        // Add user ID to request headers for server components
+        const response = NextResponse.next()
+        response.headers.set('x-user-id', decoded.userId)
+        return response
+      }
+    } catch (error) {
+      // Invalid token, continue without authentication
+    }
+  }
+
   return NextResponse.next()
 }
 

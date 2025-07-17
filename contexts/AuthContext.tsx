@@ -17,13 +17,35 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+// Helper functions for cookie management
+function setCookie(name: string, value: string, days: number = 7) {
+  const expires = new Date()
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
+  document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`
+}
+
+function getCookie(name: string): string | null {
+  const nameEQ = name + '='
+  const ca = document.cookie.split(';')
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i]
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length)
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
+  }
+  return null
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; SameSite=Strict`
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Check for existing token on mount
-    const token = localStorage.getItem('auth_token')
+    const token = getCookie('auth-token')
     if (token) {
       fetch('/api/auth/verify', {
         method: 'POST',
@@ -37,11 +59,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if (data.user) {
             setUser(data.user)
           } else {
-            localStorage.removeItem('auth_token')
+            deleteCookie('auth-token')
           }
         })
         .catch(() => {
-          localStorage.removeItem('auth_token')
+          deleteCookie('auth-token')
         })
         .finally(() => {
           setLoading(false)
@@ -66,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(data.message || 'Login failed')
     }
 
-    localStorage.setItem('auth_token', data.token)
+    setCookie('auth-token', data.token, 7)
     setUser(data.user)
   }
 
@@ -85,12 +107,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(data.message || 'Signup failed')
     }
 
-    localStorage.setItem('auth_token', data.token)
+    setCookie('auth-token', data.token, 7)
     setUser(data.user)
   }
 
   const logout = () => {
-    localStorage.removeItem('auth_token')
+    deleteCookie('auth-token')
     setUser(null)
   }
 

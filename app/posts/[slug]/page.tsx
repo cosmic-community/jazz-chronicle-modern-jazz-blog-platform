@@ -1,11 +1,12 @@
 // app/posts/[slug]/page.tsx
-import { getPost, getPosts } from '@/lib/cosmic'
+import { getPost, getPosts, getUserById } from '@/lib/cosmic'
 import { notFound } from 'next/navigation'
 import CategoryBadge from '@/components/CategoryBadge'
 import AuthorCard from '@/components/AuthorCard'
 import PostPreview from '@/components/PostPreview'
 import { Post } from '@/types'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
+import { verifyToken } from '@/lib/auth'
 
 interface PostPageProps {
   params: Promise<{ slug: string }>
@@ -47,10 +48,25 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound()
   }
 
-  // Check if user is logged in by looking for auth cookie
+  // Check if user is logged in by verifying the auth token from cookies
   const cookieStore = await cookies()
   const authCookie = cookieStore.get('auth-token')
-  const isLoggedIn = !!authCookie
+  let isLoggedIn = false
+  let currentUser = null
+
+  if (authCookie) {
+    try {
+      const decoded = await verifyToken(authCookie.value)
+      if (decoded) {
+        isLoggedIn = true
+        // Optionally get user details if needed
+        currentUser = await getUserById(decoded.userId)
+      }
+    } catch (error) {
+      // Invalid token, user is not logged in
+      isLoggedIn = false
+    }
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
