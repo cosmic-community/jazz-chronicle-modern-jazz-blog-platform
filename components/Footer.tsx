@@ -84,19 +84,29 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                backgroundColor: '#29ABE2',
+                backgroundColor: '#11171A',
                 color: 'white',
                 padding: '8px 16px',
                 borderRadius: '6px',
                 fontSize: '14px',
                 fontWeight: 500,
                 textDecoration: 'none',
-                display: 'inline-block',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
                 transition: 'background-color 0.2s ease'
               }}
-              onMouseOver={(e) => (e.target as HTMLAnchorElement).style.backgroundColor = '#01669e'}
-              onMouseOut={(e) => (e.target as HTMLAnchorElement).style.backgroundColor = '#29ABE2'}
+              onMouseOver={(e) => (e.target as HTMLAnchorElement).style.backgroundColor = '#1a2326'}
+              onMouseOut={(e) => (e.target as HTMLAnchorElement).style.backgroundColor = '#11171A'}
             >
+              <img 
+                src="https://cdn.cosmicjs.com/b67de7d0-c810-11ed-b01d-23d7b265c299-logo508x500.svg" 
+                alt="Cosmic Logo" 
+                style={{
+                  width: '20px',
+                  height: '20px',
+                }}
+              />
               Built with Cosmic
             </a>
           </div>
