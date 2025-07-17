@@ -2,10 +2,16 @@ import { getPosts, getCategories } from '@/lib/cosmic'
 import PostCard from '@/components/PostCard'
 import CategoryFilter from '@/components/CategoryFilter'
 import { Post, Category } from '@/types'
+import { cookies } from 'next/headers'
 
 export default async function HomePage() {
   const posts = await getPosts()
   const categories = await getCategories()
+  
+  // Check if user is logged in by looking for auth cookie
+  const cookieStore = await cookies()
+  const authCookie = cookieStore.get('auth-token')
+  const isLoggedIn = !!authCookie
   
   const featuredPost = posts[0]
   const otherPosts = posts.slice(1)
@@ -21,6 +27,24 @@ export default async function HomePage() {
           Explore the rich world of jazz music through expert articles, artist spotlights, 
           album reviews, and live performance coverage.
         </p>
+        {!isLoggedIn && (
+          <div className="mt-8">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-md mx-auto">
+              <p className="text-amber-800 text-sm">
+                <strong>New!</strong> Join our community to access exclusive interviews, 
+                rare recordings, and premium jazz content.
+              </p>
+              <div className="mt-3 space-x-2">
+                <a href="/signup" className="bg-amber-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-600 transition-colors">
+                  Join Now
+                </a>
+                <a href="/login" className="text-amber-700 hover:text-amber-800 text-sm font-medium">
+                  Already a member?
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Category Filter */}
@@ -40,6 +64,15 @@ export default async function HomePage() {
                   width={1200}
                   height={600}
                 />
+                {/* Exclusive content overlay */}
+                {featuredPost.metadata.exclusive && (
+                  <div className="absolute top-4 right-4 bg-amber-500 text-white px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span>Member Exclusive</span>
+                  </div>
+                )}
               </div>
             )}
             <div className="p-8">
@@ -50,6 +83,14 @@ export default async function HomePage() {
                     style={{ backgroundColor: featuredPost.metadata.category.metadata.color }}
                   >
                     {featuredPost.metadata.category.metadata.name}
+                  </span>
+                )}
+                {featuredPost.metadata.exclusive && (
+                  <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium flex items-center space-x-1 mr-4">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span>Member Only</span>
                   </span>
                 )}
                 {featuredPost.metadata.published_date && (

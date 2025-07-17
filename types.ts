@@ -43,6 +43,7 @@ interface Post extends CosmicObject {
     category?: Category;
     tags?: string;
     published_date?: string;
+    exclusive?: boolean;
   };
 }
 
@@ -133,6 +134,17 @@ interface CategoryFilterProps {
   className?: string;
 }
 
+interface ExclusiveContentBannerProps {
+  className?: string;
+}
+
+interface PostPreviewProps {
+  post: Post;
+  isLoggedIn: boolean;
+  previewLength?: number;
+  className?: string;
+}
+
 // Utility types
 type PostStatus = 'published' | 'draft' | 'archived';
 
@@ -151,5 +163,7 @@ export type {
   CategoryBadgeProps,
   AuthorCardProps,
   CategoryFilterProps,
+  ExclusiveContentBannerProps,
+  PostPreviewProps,
   PostStatus
 };
