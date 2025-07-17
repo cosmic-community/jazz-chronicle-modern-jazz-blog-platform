@@ -104,7 +104,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <div className="mt-8 pt-8 border-t border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
             <div className="flex flex-wrap gap-2">
-              {post.metadata.tags.split(',').map((tag, index) => (
+              {post.metadata.tags.split(',').map((tag: string, index: number) => (
                 <span
                   key={index}
                   className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"

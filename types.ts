@@ -82,6 +82,11 @@ interface AuthorCardProps {
   className?: string;
 }
 
+interface CategoryFilterProps {
+  categories: Category[];
+  className?: string;
+}
+
 // Utility types
 type PostStatus = 'published' | 'draft' | 'archived';
 
@@ -94,5 +99,6 @@ export type {
   PostCardProps,
   CategoryBadgeProps,
   AuthorCardProps,
+  CategoryFilterProps,
   PostStatus
 };
