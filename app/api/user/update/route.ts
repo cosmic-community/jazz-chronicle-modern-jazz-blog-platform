@@ -80,10 +80,18 @@ export async function POST(request: NextRequest) {
     // Handle avatar upload if provided
     if (avatarFile && avatarFile.size > 0) {
       try {
-        // Upload the file to Cosmic
+        // Convert File to Buffer for Cosmic upload
+        const arrayBuffer = await avatarFile.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+        
+        // Upload the file to Cosmic with proper format
         const uploadResponse = await cosmic.media.insertOne({
-          media: avatarFile,
+          media: buffer,
           folder: 'avatars',
+          metadata: {
+            originalName: avatarFile.name,
+            contentType: avatarFile.type,
+          }
         })
 
         updateData.metadata.avatar = {
