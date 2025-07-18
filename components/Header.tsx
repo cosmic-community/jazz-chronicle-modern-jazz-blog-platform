@@ -2,110 +2,143 @@
 
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
-import { useEffect, useState } from 'react'
-import { Category } from '@/types'
+import { useState } from 'react'
 
 export default function Header() {
   const { user, logout } = useAuth()
-  const [categories, setCategories] = useState<Category[]>([])
-  const [showUserMenu, setShowUserMenu] = useState(false)
-
-  useEffect(() => {
-    // Fetch categories on client side
-    fetch('/api/categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(err => console.error('Error fetching categories:', err))
-  }, [])
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            Jazz Chronicle
-          </Link>
-
-          {/* Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link 
-              href="/" 
-              className="text-gray-700 hover:text-gray-900 transition-colors"
-            >
+    <header className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link href="/" className="text-2xl font-bold text-gray-900">
+              Jazz Chronicle
+            </Link>
+          </div>
+          
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/" className="text-gray-700 hover:text-gray-900">
               Home
             </Link>
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/categories/${category.slug}`}
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                {category.metadata.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* User menu */}
-          <div className="flex items-center space-x-4">
+            <Link href="/categories" className="text-gray-700 hover:text-gray-900">
+              Categories
+            </Link>
+            
             {user ? (
               <div className="relative">
                 <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
                 >
-                  {user.avatar && (
+                  {user.avatar ? (
                     <img
                       src={`${user.avatar}?w=32&h=32&fit=crop&auto=format,compress`}
                       alt={user.name}
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full object-cover"
                     />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                      <span className="text-sm font-medium text-gray-700">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
                   )}
                   <span>{user.name}</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                    <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                      {user.email}
-                    </div>
+                
+                {isMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <Link
+                      href="/settings"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Settings
+                    </Link>
                     <button
-                      onClick={logout}
+                      onClick={() => {
+                        logout()
+                        setIsMenuOpen(false)
+                      }}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      Sign out
+                      Sign Out
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link
-                  href="/login"
-                  className="text-gray-700 hover:text-gray-900 transition-colors"
-                >
-                  Sign in
+                <Link href="/login" className="text-gray-700 hover:text-gray-900">
+                  Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 >
-                  Sign up
+                  Sign Up
                 </Link>
               </div>
             )}
-
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          </nav>
+          
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-700 hover:text-gray-900"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
           </div>
         </div>
+        
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <Link href="/" className="block px-3 py-2 text-gray-700 hover:text-gray-900">
+                Home
+              </Link>
+              <Link href="/categories" className="block px-3 py-2 text-gray-700 hover:text-gray-900">
+                Categories
+              </Link>
+              
+              {user ? (
+                <>
+                  <Link href="/settings" className="block px-3 py-2 text-gray-700 hover:text-gray-900">
+                    Settings
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout()
+                      setIsMenuOpen(false)
+                    }}
+                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-gray-900"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="block px-3 py-2 text-gray-700 hover:text-gray-900">
+                    Login
+                  </Link>
+                  <Link href="/signup" className="block px-3 py-2 text-gray-700 hover:text-gray-900">
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </header>
   )

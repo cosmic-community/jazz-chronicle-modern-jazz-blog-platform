@@ -179,3 +179,8 @@ export async function createUser(userData: CreateUserData): Promise<User> {
   
   return response.object as User
 }
+
+export async function updateUser(userId: string, updateData: Partial<User>): Promise<User> {
+  const response = await cosmic.objects.updateOne(userId, updateData)
+  return response.object as User
+}
