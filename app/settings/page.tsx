@@ -5,7 +5,7 @@ import { verifyToken } from '@/lib/auth'
 import SettingsForm from '@/components/SettingsForm'
 
 export default async function SettingsPage() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get('auth-token')?.value
 
   if (!token) {
@@ -14,7 +14,12 @@ export default async function SettingsPage() {
 
   let user
   try {
-    const decoded = verifyToken(token)
+    const decoded = await verifyToken(token)
+    
+    if (!decoded || !decoded.userId) {
+      redirect('/login')
+    }
+    
     user = await getUserById(decoded.userId)
     
     if (!user) {

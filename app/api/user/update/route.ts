@@ -13,7 +13,7 @@ const cosmic = createBucketClient({
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('auth-token')?.value
 
     if (!token) {
@@ -22,8 +22,12 @@ export async function POST(request: NextRequest) {
 
     let decoded
     try {
-      decoded = verifyToken(token)
+      decoded = await verifyToken(token)
     } catch (error) {
+      return NextResponse.json({ message: 'Invalid token' }, { status: 401 })
+    }
+
+    if (!decoded || !decoded.userId) {
       return NextResponse.json({ message: 'Invalid token' }, { status: 401 })
     }
 
